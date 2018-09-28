@@ -1,0 +1,92 @@
+<!--
+  Generated template for the LoginPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>login</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-row data-options="dxView : { name: 'login', title: 'Equilibrium Mobile', pane : 'detail', secure: false } ">
+    <ion-row id="view_login" data-options="dxContent : { targetPlaceholder: 'content' } ">
+      <ion-row class="form" data-bind="visible: navSelectedIndex() == 0">
+        <ion-row class="dx-fieldset">
+          <ion-row class="dx-fieldset-header">Login Details</ion-row>
+          <ion-row class="dx-field">
+            <ion-row class="dx-field-label">Username</ion-row>
+            <ion-row class="dx-field-value">
+              <ion-row data-bind="dxTextBox: { value: username, placeholder: 'Enter username', showClearButton: true } "></ion-row>
+            </ion-row>
+          </ion-row>
+          <ion-row class="dx-field">
+            <ion-row class="dx-field-label">Password</ion-row>
+            <ion-row class="dx-field-value">
+              <ion-row data-bind="dxTextBox: { value: password, mode: 'password', placeholder: 'Enter password', showClearButton: true }"></ion-row>
+            </ion-row>
+          </ion-row>
+          <ion-row class="dx-field">
+            <ion-row class="button" data-bind="dxButton: {icon:'user', text: 'Login', type: 'success', onClick: login, disabled: isBusy }"></ion-row>
+          </ion-row>
+          <ion-row class="dx-field">
+            <ion-row data-bind="dxCheckBox: { value: rememberUsername }"></ion-row> Remember username
+          </ion-row>
+        </ion-row>
+      </ion-row>
+
+      <ion-row class="form" data-bind="visible: navSelectedIndex() == 1">
+        <ion-row id="settingsGroup" data-bind="dxValidationGroup : {}">
+          <ion-row class="dx-fieldset">
+            <ion-row class="dx-fieldset-header">Settings</ion-row>
+            <ion-row class="dx-field">
+              <ion-row class="dx-field-label">Server Name</ion-row>
+              <ion-row class="dx-field-value">
+                <ion-row data-bind="dxTextBox: { value: serverName, placeholder: 'Enter server name', showClearButton: true }, dxValidator: { validationRules: [{ type: 'required', height:0 }]}"></ion-row>
+              </ion-row>
+            </ion-row>
+            <ion-row class="dx-field">
+              <ion-row class="dx-field-label">Company Name</ion-row>
+              <ion-row class="dx-field-value">
+                <ion-row data-bind="dxLookup: { value: databaseName, text : 'description', valueExpr : 'key', displayExpr : 'description', placeholder: 'Select a company', dataSource : companyList, onOpened : populateCompanyListFromOnline }, dxValidator: { validationRules: [{ type: 'required', height:0 }]}"></ion-row>
+              </ion-row>
+            </ion-row>
+            <ion-row class="dx-field">
+              <ion-row data-bind="dxCheckBox: { value: useSsl }"></ion-row> Use secure connection
+            </ion-row>
+          </ion-row>
+          <ion-row class="dx-field">
+            <ion-row class="button" data-bind="dxButton: { icon:'save', text: 'Save Settings', type: 'success', onClick: saveSettings }"></ion-row>
+            <ion-row class="button" data-bind="dxButton: { icon:'remove', text: 'Clear all offline data', type: 'success', onClick: clearOfflineData }"></ion-row>
+          </ion-row>
+          <hr />
+          <ion-row>App version : <span data-bind="text:version()"></span></ion-row>
+          <ion-row>Codepush label : <span data-bind="text:codepushLabel()"></span></ion-row>
+        </ion-row>
+      </ion-row>
+
+      <ion-row data-bind="dxNavBar: { dataSource: navData, selectedIndex: navSelectedIndex}"></ion-row>
+
+      <ion-row data-bind="dxLoadPanel : { visible: isBusy(), showIndicator: true, showPane: false, shadingColor: 'rgba(0,0,0,0.4)'}"></ion-row>
+
+      <ion-row style="display:none" data-bind="dxPopup: { showTitle: true, title: 'Downloading update', visible:downloadingUpdate, dragEnabled:false, closeOnOutsideClick:false, contentTemplate:'codepush-download', height: '200px' }">
+        <ion-row data-options="dxTemplate: { name : 'codepush-download' }">
+          <ion-row data-bind="dxProgressBar: { min: 0, max: 100, showStatus:false, value:downloadProgress }"></ion-row>
+          <ion-row data-bind="dxLoadPanel : { visible: isBusy(), showIndicator: true, showPane: false, shadingColor: 'rgba(0,0,0,0.4)'}"></ion-row>
+        </ion-row>
+      </ion-row>
+
+      <ion-row data-bind="dxPopup: { showTitle: true, title: 'Installing update', visible:installingUpdate, dragEnabled:false, closeOnOutsideClick: false, contentTemplate:'codepush-installing' }">
+        <ion-row data-options="dxTemplate: { name : 'codepush-installing' }">
+          <ion-row>Please wait while we install the update</ion-row>
+        </ion-row>
+      </ion-row>
+    </ion-row>
+  </ion-row>
+
+</ion-content>
