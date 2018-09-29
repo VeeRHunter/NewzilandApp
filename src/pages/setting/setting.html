@@ -1,0 +1,145 @@
+<!--
+  Generated template for the SettingPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header class="header-class">
+
+  <ion-row class="header-row">
+    <ion-col col-2>
+      <ion-row class="full-height">
+        <ion-icon name="md-menu" menuToggle class="header-icon"></ion-icon>
+      </ion-row>
+    </ion-col>
+    <ion-col col-8>
+      <ion-row class="full-height">
+        <span class="header-span">
+          Equilibrium Mobile
+        </span>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-row class="login-detail">
+    <span>
+      Settings
+    </span>
+  </ion-row>
+
+  <ion-row class="login-input-row">
+    <ion-col col-4>
+      <ion-row class="full-height">
+        <span>Sever Name</span>
+      </ion-row>
+    </ion-col>
+    <ion-col col-8>
+      <ion-row class="full-height">
+        <input [(ngModel)]="userData.servername" placeholder="Enter server name" (focus)="getCompanyFocusOn()"
+          (focusout)="getCompanyFocusOut()">
+        <ion-icon name="ios-close-circle" class="close-icon" *ngIf="userData.servername != '' && userData.servername != null"
+          (click)="clearUsername()"></ion-icon>
+        <ion-icon name="ios-alert" class="error-icon" *ngIf="serNameState && userData.servername == ''"></ion-icon>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="login-input-row">
+    <ion-col col-4>
+      <ion-row class="full-height">
+        <span>Company Name</span>
+      </ion-row>
+    </ion-col>
+    <ion-col col-8>
+      <ion-row class="full-height">
+        <ion-select [(ngModel)]="userData.company" placeholder="Enter company name">
+          <ion-option value="{{list.key}}" *ngFor="let list of companyList; let i = index">{{list.description}}</ion-option>
+        </ion-select>
+        <ion-icon name="ios-arrow-forward" class="close-icon"></ion-icon>
+        <ion-icon name="ios-alert" class="error-icon" *ngIf="comNameState"></ion-icon>
+      </ion-row>
+    </ion-col>
+
+    <ion-row class="remember-row">
+      <ion-list>
+        <ion-item>
+          <ion-checkbox [(ngModel)]="secureCon"></ion-checkbox>
+          <ion-label>Use secure connection</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-row>
+  </ion-row>
+
+  <ion-row class="login-button margin-top-2">
+    <ion-col col-12>
+      <ion-row class="full-height">
+        <button ion-button (click)="saveSetting()">
+          <ion-row class="full-height">
+            <ion-icon name="md-card"></ion-icon>
+            <span>Save Settings</span>
+          </ion-row>
+        </button>
+      </ion-row>
+    </ion-col>
+
+    <!-- <ion-col col-6>
+      <ion-row class="full-height">
+        <button ion-button (click)="login()">
+          <ion-row class="full-height">
+            <ion-icon name="ios-trash-outline"></ion-icon>
+            <span>Clear All Offline Data</span>
+          </ion-row>
+        </button>
+      </ion-row>
+    </ion-col> -->
+  </ion-row>
+
+  <ion-row class="login-button">
+    <!-- <ion-col col-6>
+      <ion-row class="full-height">
+        <button ion-button (click)="login()">
+          <ion-row class="full-height">
+            <ion-icon name="md-card"></ion-icon>
+            <span>Save Settings</span>
+          </ion-row>
+        </button>
+      </ion-row>
+    </ion-col> -->
+
+    <ion-col col-12>
+      <ion-row class="full-height">
+        <button ion-button (click)="clearOffline()">
+          <ion-row class="full-height">
+            <ion-icon name="ios-trash-outline"></ion-icon>
+            <span>Clear All Offline Data</span>
+          </ion-row>
+        </button>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="border-row"></ion-row>
+
+  <ion-row class="app-detail">
+    <ion-row>
+      <span>
+        App verion: 2018-09-29. 1
+      </span>
+    </ion-row>
+    <ion-row>
+      <span>
+        Codepush label: Not Available
+      </span>
+    </ion-row>
+  </ion-row>
+
+
+
+
+
+
+</ion-content>

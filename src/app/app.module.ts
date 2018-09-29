@@ -7,25 +7,33 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
+import { SettingPage } from '../pages/setting/setting';
+import { TabsPage } from '../pages/tabs/tabs';
+import { ServerinfoProvider } from '../providers/serverinfo/serverinfo';
+import { HttpModule } from '@angular/http';
+
+import { Md5 } from 'ts-md5/dist/md5';
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage, LoginPage
+    HomePage, LoginPage, SettingPage, TabsPage
   ],
   imports: [
     BrowserModule,
+    HttpModule,
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage, LoginPage
+    HomePage, LoginPage, SettingPage, TabsPage
   ],
   providers: [
     StatusBar,
-    SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    SplashScreen, Md5,
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
+    ServerinfoProvider
   ]
 })
-export class AppModule {}
+export class AppModule { }

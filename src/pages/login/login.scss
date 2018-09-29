@@ -1,9 +1,64 @@
 page-login {
-    .dx-fieldset-header {
-        color: #00BCD4;
-        line-height: 24px;
-        padding: 12px 0px;
-        font-weight: bold;
-        font-size: 14px;
+    .login-detail {
+        margin-top: 10px;
+        span {
+            font-size: 2rem;
+            color: #00BCD4;
+            font-weight: bold;
+        }
+    }
+    .login-input-row {
+        margin-top: 20px;
+        span {
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+        input {
+            border-top: unset !important;
+            border-left: unset !important;
+            border-right: unset !important;
+            width: 100%;
+        }
+        .close-icon {
+            color: #979797;
+            position: absolute;
+            right: 0px;
+        }
+        .full-height {
+            position: relative;
+        }
+    }
+    .login-button {
+        margin-top: 20px;
+        button {
+            background-color: #0f9d58;
+            margin: auto;
+            ion-icon {
+                margin-top: auto;
+                margin-bottom: auto;
+                padding-right: 10px;
+            }
+            span {
+                margin-top: auto;
+                margin-bottom: auto;
+            }
+        }
+    }
+    .remember-row {
+        margin-top: 20px;
+        .checkbox-checked {
+            border-color: #00BCD4 !important;
+            background-color: #00BCD4 !important;
+        }
+        ion-label {
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+        ion-item {
+            border: unset !important;
+        }
+        .list-md .item-block .item-inner {
+            margin-left: -20px !important;
+        }
     }
 }
