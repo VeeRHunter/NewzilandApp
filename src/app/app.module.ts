@@ -11,13 +11,13 @@ import { SettingPage } from '../pages/setting/setting';
 import { TabsPage } from '../pages/tabs/tabs';
 import { ServerinfoProvider } from '../providers/serverinfo/serverinfo';
 import { HttpModule } from '@angular/http';
+import { AboutPage } from '../pages/about/about';
 
-import { Md5 } from 'ts-md5/dist/md5';
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage, LoginPage, SettingPage, TabsPage
+    HomePage, LoginPage, SettingPage, TabsPage, AboutPage
   ],
   imports: [
     BrowserModule,
@@ -27,11 +27,11 @@ import { Md5 } from 'ts-md5/dist/md5';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage, LoginPage, SettingPage, TabsPage
+    HomePage, LoginPage, SettingPage, TabsPage, AboutPage
   ],
   providers: [
     StatusBar,
-    SplashScreen, Md5,
+    SplashScreen,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     ServerinfoProvider
   ]

@@ -46,6 +46,7 @@ export class LoginPage {
   }
 
   login() {
+    this.serverName = localStorage.getItem("serverName");
     if (this.serverName == null || typeof (this.serverName) == "undefined") {
       // this.toastCtrl.create({
       //   message: "Settings have not been set. Please set your settings before attempting to log in.",
