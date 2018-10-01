@@ -1,2 +1,2 @@
-# NewzilandApp
-NewzilandApp
+# Equilibrium Mobile
+

@@ -1,10 +1,5 @@
-<!--
-  Generated template for the LoginPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
-<ion-header class="header-class">
+<!-- See https://github.com/mobxjs/mobx-angular .. It shows how mobxAutorun works -->
+<ion-header class="header-class" *mobxAutorun>
 
   <ion-row class="header-row">
     <ion-col col-2>
@@ -20,12 +15,10 @@
       </ion-row>
     </ion-col>
   </ion-row>
-
 </ion-header>
 
-
 <ion-content padding>
-  <ion-row *ngIf="switchState">
+  <ion-row *ngIf="model.activeTab == 0">
     <ion-row class="login-detail">
       <span>
         Login Details
@@ -40,8 +33,10 @@
       </ion-col>
       <ion-col col-8>
         <ion-row class="full-height">
-          <input [(ngModel)]="userData.username" placeholder="Enter username">
-          <ion-icon name="ios-close-circle" class="close-icon" *ngIf="userData.username != ''" (click)="clearUsername()"></ion-icon>
+          <input [(ngModel)]="model.username" placeholder="Enter username">
+          <ion-row class="close-icon">
+            <ion-icon name="ios-close-circle" *ngIf="model.username != ''" (click)="clearUsername()"></ion-icon>
+          </ion-row>
         </ion-row>
       </ion-col>
     </ion-row>
@@ -54,8 +49,10 @@
       </ion-col>
       <ion-col col-8>
         <ion-row class="full-height">
-          <input [(ngModel)]="userData.password" placeholder="Enter password">
-          <ion-icon name="ios-close-circle" class="close-icon" *ngIf="userData.password != ''" (click)="clearPassword()"></ion-icon>
+          <input [(ngModel)]="model.password" placeholder="Enter password">
+          <ion-row class="close-icon">
+            <ion-icon name="ios-close-circle" *ngIf="model.password != ''" (click)="clearPassword()"></ion-icon>
+          </ion-row>
         </ion-row>
       </ion-col>
     </ion-row>
@@ -80,8 +77,7 @@
 
   </ion-row>
 
-  <ion-row *ngIf="!switchState">
-
+  <ion-row *ngIf="model.activeTab == 1">
     <ion-row class="login-detail">
       <span>
         Settings
@@ -96,11 +92,11 @@
       </ion-col>
       <ion-col col-8>
         <ion-row class="full-height">
-          <input [(ngModel)]="userData.servername" placeholder="Enter server name" (focus)="getCompanyFocusOn()"
-            (focusout)="getCompanyFocusOut()">
-          <ion-icon name="ios-close-circle" class="close-icon" *ngIf="userData.servername != '' && userData.servername != null"
-            (click)="clearservername()"></ion-icon>
-          <ion-icon name="ios-alert" class="error-icon" *ngIf="serNameState && userData.servername == ''"></ion-icon>
+          <input [(ngModel)]="model.serverName" placeholder="Enter server name">
+          <ion-row class="close-icon">
+            <ion-icon name="ios-close-circle" *ngIf="model.serverName != ''" (click)="clearServerName()"></ion-icon>
+            <ion-icon name="ios-alert" class="error-icon" *ngIf="model.serverName == ''"></ion-icon>
+          </ion-row>
         </ion-row>
       </ion-col>
     </ion-row>
@@ -111,57 +107,62 @@
           <span>Company Name</span>
         </ion-row>
       </ion-col>
+
+      <!-- TODO : I do not want this to be a select. I want a screen to popup, so that the company list does not need to be loaded
+        in order to display the company name. The company list must only be loaded when selecting the company
+      -->
       <ion-col col-8>
         <ion-row class="full-height company-row">
-          <!-- <ion-select [(ngModel)]="userData.company" placeholder="Enter company name">
-            <ion-option value="{{list.key}}" *ngFor="let list of companyList; let i = index">{{list.description}}</ion-option>
-          </ion-select>-->
-          <ion-icon name="ios-arrow-forward" class="close-icon"></ion-icon>
-          <span *ngIf="userData.company != ''" (click)="showCampanyList()">
-            {{companyDes}}
+          <ion-row class="close-icon">
+            <ion-icon name="ios-alert" class="error-icon" *ngIf="model.databaseName == null"></ion-icon>
+            <ion-icon name="ios-arrow-forward" *ngIf="model.databaseName != null"></ion-icon>
+          </ion-row>
+          <span *ngIf="model.databaseName != ''" (click)="getCompanyList()">
+            {{model.companyName}}
           </span>
-          <span class="placehoder-color" *ngIf="userData.company == ''" (click)="getCompanyList()">
+          <span class="placehoder-color" *ngIf="model.databaseName == ''" (click)="getCompanyList()">
             Enter company name
           </span>
-          <ion-icon name="ios-alert" class="error-icon" *ngIf="comNameState"></ion-icon>
+
         </ion-row>
       </ion-col>
 
       <ion-row class="remember-row">
         <ion-list>
           <ion-item>
-            <ion-checkbox [(ngModel)]="secureCon"></ion-checkbox>
+            <ion-checkbox [(ngModel)]="model.useSsl"></ion-checkbox>
             <ion-label>Use secure connection</ion-label>
           </ion-item>
         </ion-list>
       </ion-row>
-    </ion-row>
 
-    <ion-row class="login-button margin-top-2">
-      <ion-col col-12>
-        <ion-row class="full-height">
-          <button ion-button (click)="saveSetting()">
-            <ion-row class="full-height">
-              <ion-icon name="md-card"></ion-icon>
-              <span>Save Settings</span>
-            </ion-row>
-          </button>
-        </ion-row>
-      </ion-col>
-    </ion-row>
 
-    <ion-row class="login-button">
+      <!-- <ion-row class="login-button margin-top-2">
+        <ion-col col-12>
+          <ion-row class="full-height">
+            <button ion-button (click)="saveSetting()">
+              <ion-row class="full-height">
+                <ion-icon name="md-card"></ion-icon>
+                <span>Save Settings</span>
+              </ion-row>
+            </button>
+          </ion-row>
+        </ion-col>
+      </ion-row> -->
 
-      <ion-col col-12>
-        <ion-row class="full-height">
-          <button ion-button (click)="clearOffline()">
-            <ion-row class="full-height">
-              <ion-icon name="ios-trash-outline"></ion-icon>
-              <span>Clear All Offline Data</span>
-            </ion-row>
-          </button>
-        </ion-row>
-      </ion-col>
+      <!-- TODO : Should be left aligned -->
+      <ion-row class="login-button">
+        <ion-col col-12>
+          <ion-row class="full-height">
+            <button ion-button (click)="clearOffline()">
+              <ion-row class="full-height">
+                <ion-icon name="ios-trash-outline"></ion-icon>
+                <span>Clear All Offline Data</span>
+              </ion-row>
+            </button>
+          </ion-row>
+        </ion-col>
+      </ion-row>
     </ion-row>
 
     <ion-row class="border-row"></ion-row>
@@ -174,23 +175,25 @@
       </ion-row>
       <ion-row>
         <span>
+          <!-- TODO : Get from codepush .. See the code in the old project for how to do this -->
           Codepush label: Not Available
         </span>
       </ion-row>
     </ion-row>
+
   </ion-row>
 
-  <ion-row class="company-list" *ngIf="companyListSelected">
+  <ion-row class="company-list" *ngIf="model.companyListSelected">
     <ion-row class="company-body">
-      <ion-row class="company-detail" *ngIf="!getCompanyListState()">
-        <ion-row [ngClass]="{'each-company':list.description != companyDes  , 'selected-company': list.description == companyDes}"
-          *ngFor="let list of companyList; let i = index" (click)="selectCompany(i)">
+      <ion-row class="company-detail" *ngIf="!model.companyListState">
+        <ion-row [ngClass]="{'each-company':list.description != model.companyName  , 'selected-company': list.description == model.companyName}"
+          *ngFor="let list of model.companyList; let i = index" (click)="selectCompany(i)">
           <span>
             {{list.description}}
           </span>
         </ion-row>
       </ion-row>
-      <ion-row *ngIf="getCompanyListState()">
+      <ion-row *ngIf="model.companyListState">
         <ion-row class="empty-company">
           <span>
             No data to display
@@ -206,12 +209,11 @@
     </ion-row>
   </ion-row>
 
-
 </ion-content>
 
 <ion-footer>
   <ion-row class="tab-footer">
-    <ion-col col-6 [ngClass]="{'selected':switchState, 'unselected':!switchState}" (click)="switchLogin()">
+    <ion-col col-6 [ngClass]="{'selected':model.activeTab == 0, 'unselected':model.activeTab != 0}" (click)="selectLoginTab()">
       <ion-row class="full-height">
         <ion-row>
           <ion-icon name="md-person"></ion-icon>
@@ -224,14 +226,14 @@
       </ion-row>
     </ion-col>
 
-    <ion-col col-6 [ngClass]="{'unselected':switchState, 'selected':!switchState}" (click)="switchSetting()">
+    <ion-col col-6 [ngClass]="{'unselected':model.activeTab != 1, 'selected':model.activeTab == 1}" (click)="selectSettingsTab()">
       <ion-row class="full-height">
         <ion-row>
           <ion-icon name="md-settings"></ion-icon>
         </ion-row>
         <ion-row>
           <span>
-            Setting
+            Settings
           </span>
         </ion-row>
       </ion-row>

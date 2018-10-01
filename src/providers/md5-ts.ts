@@ -1,3 +1,4 @@
+// tslint:disable
 export let md5 = (string) => {
 
     function RotateLeft(lValue, iShiftBits) {
@@ -98,11 +99,11 @@ export let md5 = (string) => {
 
     function Utf8Encode(string) {
         string = string.replace(/\r\n/g, "\n");
-        let utftext = "";
+        var utftext = "";
 
-        for (let n = 0; n < string.length; n++) {
+        for (var n = 0; n < string.length; n++) {
 
-            const c = string.charCodeAt(n);
+            var c = string.charCodeAt(n);
 
             if (c < 128) {
                 utftext += String.fromCharCode(c);
@@ -118,23 +119,23 @@ export let md5 = (string) => {
         }
 
         return utftext;
-    }
+    };
 
-    let x = Array();
-    let k, AA, BB, CC, DD, a, b, c, d;
-    const S11 = 7,
+    var x = Array();
+    var k, AA, BB, CC, DD, a, b, c, d;
+    var S11 = 7,
         S12 = 12,
         S13 = 17,
         S14 = 22;
-    const S21 = 5,
+    var S21 = 5,
         S22 = 9,
         S23 = 14,
         S24 = 20;
-    const S31 = 4,
+    var S31 = 4,
         S32 = 11,
         S33 = 16,
         S34 = 23;
-    const S41 = 6,
+    var S41 = 6,
         S42 = 10,
         S43 = 15,
         S44 = 21;
@@ -223,7 +224,7 @@ export let md5 = (string) => {
         d = AddUnsigned(d, DD);
     }
 
-    const temp = WordToHex(a) + WordToHex(b) + WordToHex(c) + WordToHex(d);
+    var temp = WordToHex(a) + WordToHex(b) + WordToHex(c) + WordToHex(d);
 
     return temp.toLowerCase();
 };

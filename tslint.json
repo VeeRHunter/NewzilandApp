@@ -1,13 +1,22 @@
 {
+  "extends": "tslint-ionic-rules/strict",
   "rules": {
     "no-duplicate-variable": true,
-    "no-unused-variable": [
-      true
-    ],
-    "linebreak-style": 0,
+    "member-access": [true, "check-accessor"],
+    "no-console": [false],
+    "trailing-comma": [false],
+    "no-any": [true],
+    "no-unsafe-any" : [true],
+    "arrow-parens": false,
+    "promise-function-async": [true],
+    "no-unused-variable": [true],
+    "linebreak-style": [false],
+    "ordered-imports": [false],
+    "no-null-keyword": [false],
+    "triple-equals":[false],
+    "eofline": [false]
   },
   "rulesDirectory": [
     "node_modules/tslint-eslint-rules/dist/rules"
-  ],
-  "extends": "tslint-ionic-rules/strict"
+  ]
 }

@@ -18,8 +18,7 @@ export class AboutPage {
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
-  ionViewDidLoad() {
-    // tslint:disable-next-line:no-console
+  public ionViewDidLoad() {
     console.log('ionViewDidLoad AboutPage');
   }
 

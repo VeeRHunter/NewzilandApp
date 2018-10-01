@@ -1,214 +1,168 @@
-import { Component } from '@angular/core';
-import { AlertController, IonicPage, LoadingController, NavController, NavParams, Platform, ToastController } from 'ionic-angular';
-// import { ServerinfoProvider } from '../../providers/serverinfo/serverinfo';
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { IonicPage, NavController, NavParams, ToastController, AlertController, LoadingController, Platform } from 'ionic-angular';
+import { DirectoryService } from '../../providers/directoryService';
 
-import { AuthenticationService } from '../../providers/AuthenticationService';
-import { md5 } from '../../providers/md5-ts';
-
-/**
- * Generated class for the LoginPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { ApplicationConfigurationState, LoginConfiguration } from '../../providers/applicationConfigurationState';
+import { CompanyModel } from '../../models/CompanyModel';
+import { AuthenticationService } from '../../providers/authenticationService';
+import { observable } from 'mobx-angular';
 
 @IonicPage()
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',
+  // Much more efficient change detection. Mobx automatically pushes updates to observable properties
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginPage {
+  public model = new Model();
 
-  userData = { 'username': '', 'password': '', 'company': '', 'servername': '' };
-  remUsername: boolean;
-  switchState = true;
-
-  secureCon: boolean;
-  serNameState: boolean;
-  comNameState: boolean;
-  companyListSelected = false;
-
-  companyList: any[];
-  companyDes = '';
-  serverName = '';
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController,
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public toastCtrl: ToastController,
     public platform: Platform,
-    public alertCtrl: AlertController, public authService: AuthenticationService, public loadingCtrl: LoadingController) {
+    public alertCtrl: AlertController,
+    public directoryService: DirectoryService,
+    public authenticationService: AuthenticationService,
+    public loadingCtrl: LoadingController,
+    public applicationConfigurationState: ApplicationConfigurationState,
+    public cdRef: ChangeDetectorRef) {
+
+    this.model.username = applicationConfigurationState.loginConfiguration.username;
+    this.model.useSsl = applicationConfigurationState.loginConfiguration.useSsl;
+    this.model.databaseName = applicationConfigurationState.loginConfiguration.databaseName;
+    this.model.companyName = applicationConfigurationState.loginConfiguration.companyName;
+    this.model.serverName = applicationConfigurationState.loginConfiguration.serverName;
   }
 
-  ionViewDidLoad() {
-    // tslint:disable-next-line:no-console
+  public ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
-    this.secureCon = true;
-    this.serNameState = false;
-    this.comNameState = false;
-    this.companyList = new Array();
-    this.serverName = localStorage.getItem('serverName');
-    this.switchSetting();
-    this.switchLogin();
   }
 
-  clearUsername() {
-    this.userData.username = '';
+  public clearUsername() {
+    this.model.username = '';
   }
 
-  clearPassword() {
-    this.userData.password = '';
+  public clearPassword() {
+    this.model.password = '';
   }
 
-  login() {
-    this.serverName = localStorage.getItem('serverName');
-    if (this.serverName === undefined || typeof (this.serverName) === 'undefined') {
+  public clearServerName() {
+    this.model.serverName = '';
+  }
+
+  public login() {
+    if (this.applicationConfigurationState.loginConfiguration == null) {
       const alert = this.alertCtrl.create({
         title: 'Error',
         message: 'Settings have not been set. Please set your settings before attempting to log in.',
-        buttons: ['Ok'],
+        buttons: ['Ok']
       });
       alert.present();
     } else {
-      if (this.userData.username === '' || this.userData.company === '') {
+      if (this.model.username == '') {
         const alert = this.alertCtrl.create({
           title: 'Error',
-          message: 'Failed to perform online login and offline credentials do not exist',
-          buttons: ['Ok'],
+          message: '"Please input valid username',
+          buttons: ['Ok']
         });
         alert.present();
       } else {
         const loading = this.loadingCtrl.create({
-          content: 'Please wait...',
+          content: 'Please wait...'
         });
         loading.present();
-        const serverURL = 'http://' + this.serverName + '/EquilibriumApi/api/v1/auth/login';
-        const netParam = { 'database': '', 'username': '', 'hashedPassword': '', 'includeMenuItems': true };
-        netParam.database = localStorage.getItem('companyName');
-        netParam.username = this.userData.username;
-        netParam.hashedPassword = md5(this.userData.password);
-        this.authService.login(serverURL, netParam).then(result => {
-          // tslint:disable-next-line:no-console
-          console.log(result);
-          if (this.remUsername) {
-            localStorage.setItem('username', this.userData.username);
-            localStorage.setItem('remUsername', JSON.stringify(this.remUsername));
-          } else {
-            localStorage.setItem('username', '');
-            localStorage.setItem('remUsername', JSON.stringify(this.remUsername));
-          }
-          const alert = this.alertCtrl.create({
-            title: 'Success',
-            message: 'You are logged in this app',
-            buttons: ['Ok'],
+
+        this.applicationConfigurationState.loginConfiguration.serverName = this.model.serverName;
+        this.applicationConfigurationState.loginConfiguration.useSsl = this.model.useSsl;
+        this.applicationConfigurationState.loginConfiguration.companyName = this.model.companyName;
+
+        this.authenticationService.login(this.model.username, this.model.password, this.model.databaseName)
+          .then(result => {
+            console.info('authentication result', result);
+            loading.dismiss();
+
+            // TODO : Save username etc into the configuration
+            // Add the user to the list of offline users, so we can use it to login offline in the future
+
+          }, error => {
+            console.error('error logging in:', error);
+
+            loading.dismiss();
+            const toast = this.toastCtrl.create({
+              // TODO : Show correct error message
+              message: 'Login Failed:' + error,
+              duration: 2000
+            });
+            toast.present();
           });
-          alert.present();
-          loading.dismiss();
-        }, error => {
-          loading.dismiss();
-          const toast = this.toastCtrl.create({
-            message: 'No Network',
-            duration: 2000,
-          });
-          toast.present();
-        });
       }
     }
   }
 
-  switchLogin() {
-    if (!this.companyListSelected) {
-      this.switchState = true;
-      if (this.getLocalstorageState('username')) {
-        this.userData.username = localStorage.getItem('username');
-      }
-      if (this.getLocalstorageState('remUsername')) {
-        // tslint:disable-next-line:prefer-conditional-expression
-        if (localStorage.getItem('remUsername') === 'true') {
-          this.remUsername = true;
-        } else {
-          this.remUsername = false;
-        }
-      }
+  public selectLoginTab() {
+    if (!this.model.companyListSelected) {
+      this.model.activeTab = 0;
     }
   }
 
-  switchSetting() {
-    if (!this.companyListSelected) {
-      this.switchState = false;
-      if (this.getLocalstorageState('serverName')) {
-        this.userData.servername = localStorage.getItem('serverName');
-      }
-      if (this.getLocalstorageState('companyName')) {
-        this.userData.company = localStorage.getItem('companyName');
-        this.companyList = JSON.parse(localStorage.getItem('companyList'));
-        this.companyDes = localStorage.getItem('companyDes');
-      }
+  public selectSettingsTab() {
+    if (!this.model.companyListSelected) {
+      this.model.activeTab = 1;
     }
   }
 
-  getLocalstorageState(value) {
-    if (localStorage.getItem(value) !== undefined && localStorage.getItem(value) !== ''
-      && typeof (localStorage.getItem(value)) !== 'undefined') {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  clearservername() {
-    this.userData.servername = '';
-  }
-  getCompanyList() {
-    if (this.userData.servername === '') {
+  public getCompanyList() {
+    // tslint:disable-next-line:no-empty
+    // this.cdRef.detectChanges();
+    if (this.model.serverName == '') {
       this.showCampanyList();
     } else {
       const loading = this.loadingCtrl.create({
-        content: 'Please wait...',
+        content: 'Please company list'
       });
       loading.present();
-      const serverURL = 'http://' + this.userData.servername + '/equilibriumdirectory/api/instance/get';
-      this.authService.getCompanyList(serverURL).then(result => {
-        this.companyList = new Array();
-        for (const list of Object(result)) {
-          this.companyList.push(list);
-        }
-        this.showCampanyList();
-        this.companyDes = this.companyList[0].description;
-        this.userData.company = this.companyList[0].key;
-        loading.dismiss();
-      }, error => {
-        loading.dismiss();
-        const toast = this.toastCtrl.create({
-          message: 'No Network',
-          duration: 2000,
+
+      this.applicationConfigurationState.loginConfiguration.serverName = this.model.serverName;
+
+      this.directoryService.getCompanyList()
+        .then((result: CompanyModel[]) => {
+          console.log('Obtained company list:', result);
+          loading.dismiss();
+
+          this.model.companyList = result;
+          if (this.model.databaseName == '') {
+            this.model.databaseName = this.model.companyList[0].key;
+            this.model.companyName = this.model.companyList[0].description;
+          }
+          this.showCampanyList();
+          console.log(this.model.companyList);
+        }, error => {
+          console.error('Error obtaining company list:', error);
+          loading.dismiss();
+          this.showCampanyList();
+
+          const toast = this.toastCtrl.create({
+            message: 'No Network',
+            duration: 2000
+          });
+          toast.present();
         });
-        toast.present();
-        this.showCampanyList();
-      });
     }
   }
 
-  getCompanyFocusOn() {
-    // console.log('aisjdhfajsdhfl');
+  public clearOffline() {
+    this.applicationConfigurationState.resetPersistentState();
+    this.model.databaseName = '';
+    const toast = this.toastCtrl.create({
+      message: 'Offline data has been cleared',
+      duration: 1500
+    });
+    toast.present();
   }
 
-  getCompanyFocusOut() {
-    // tslint:disable-next-line:prefer-conditional-expression
-    if (this.userData.servername === '') {
-      this.serNameState = true;
-    } else {
-      this.serNameState = false;
-    }
-  }
-
-  onEmpSelected() {
-    // console.log(this.userData);
-  }
-
-  saveSetting() {
-    // console.log(this.userData);
-    localStorage.setItem('serverName', this.userData.servername);
-    localStorage.setItem('companyName', this.userData.company);
-    localStorage.setItem('companyDes', this.companyDes);
-    localStorage.setItem('companyList', JSON.stringify(this.companyList));
+  public saveSetting() {
     const toast = this.toastCtrl.create({
       message: 'Settings have been saved',
       duration: 1500,
@@ -216,45 +170,44 @@ export class LoginPage {
     toast.present();
   }
 
-  clearOffline() {
-    localStorage.setItem('companyName', '');
-    localStorage.setItem('companyList', '');
-    localStorage.setItem('companyDes', '');
-    this.userData.company = '';
-    this.companyList = new Array();
-    setTimeout(() => {
-      if (this.userData.servername !== '') {
-        // this.getCompanyList();
-      }
-    }, 500);
-    const toast = this.toastCtrl.create({
-      message: 'Offline data has been cleared',
-      duration: 1500,
-    });
-    toast.present();
+  public showCampanyList() {
+    this.model.companyListSelected = true;
+    this.getCompanyListState();
   }
 
-  showCampanyList() {
-    this.companyListSelected = true;
-  }
-
-  getCompanyListState() {
-    if (this.companyList.length === 0) {
-      return true;
+  public getCompanyListState() {
+    // tslint:disable-next-line:prefer-conditional-expression
+    if (this.model.companyList.length > 0) {
+      this.model.companyListState = false;
     } else {
-      return false;
+      this.model.companyListState = true;
     }
+    this.cdRef.detectChanges();
   }
 
-  cancelCampany() {
-    this.companyListSelected = false;
+  public cancelCampany() {
+    this.model.companyListSelected = false;
   }
 
-  selectCompany(index) {
-    // console.log(this.companyList[index]);
-    this.userData.company = this.companyList[index].key;
-    this.companyDes = this.companyList[index].description;
+  public selectCompany(index) {
+    this.model.databaseName = this.model.companyList[index].key;
+    this.model.companyName = this.model.companyList[index].description;
+    this.applicationConfigurationState.loginConfiguration.databaseName = this.model.databaseName;
+
     this.cancelCampany();
   }
+}
 
+class Model {
+  @observable public username = '';
+  @observable public password = '';
+  @observable public companyList = new Array<CompanyModel>();
+  @observable public serverName = '';
+  @observable public databaseName = '';
+  @observable public companyName = '';
+  @observable public useSsl = true;
+  @observable public companyListSelected = false;
+  @observable public companyListState = false;
+
+  @observable public activeTab = 0;
 }

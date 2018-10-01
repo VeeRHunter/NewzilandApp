@@ -10,9 +10,11 @@ import { LoginPage } from '../pages/login/login';
   templateUrl: 'app.html',
 })
 export class MyApp {
-  @ViewChild(Nav) nav: Nav;
-  rootPage: any = LoginPage;
-  pages: { title: string, component: any, image: string }[];
+  @ViewChild(Nav) public nav: Nav;
+  // tslint:disable-next-line:no-any
+  public rootPage: any = LoginPage;
+  // tslint:disable-next-line:no-any
+  public pages: { title: string, component: any, image: string }[];
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
     platform.ready().then(() => {
@@ -24,7 +26,7 @@ export class MyApp {
     });
   }
 
-  ionicInit() {
+  public ionicInit() {
 
     this.pages = [
       { title: 'Login', component: LoginPage, image: 'login' },
@@ -34,7 +36,7 @@ export class MyApp {
 
   }
 
-  openPage(page) {
+  public openPage(page) {
     // console.log(localStorage.getItem('pageName'));
     // tslint:disable-next-line:no-empty
     if (localStorage.getItem('pageName') === page.title) {

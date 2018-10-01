@@ -17,48 +17,7 @@ page-login {
             border-top: unset !important;
             border-left: unset !important;
             border-right: unset !important;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.2);
             width: 100%;
-        }
-        ::-webkit-input-placeholder {
-            /* Chrome */
-            color: #999;
-            transition: opacity 250ms ease-in-out;
-        }
-        :focus::-webkit-input-placeholder {
-            opacity: 0.5;
-        }
-        :-ms-input-placeholder {
-            /* IE 10+ */
-            color: #999;
-            transition: opacity 250ms ease-in-out;
-        }
-        :focus:-ms-input-placeholder {
-            opacity: 0.5;
-        }
-        ::-moz-placeholder {
-            /* Firefox 19+ */
-            color: #999;
-            opacity: 1;
-            transition: opacity 250ms ease-in-out;
-        }
-        :focus::-moz-placeholder {
-            opacity: 0.5;
-        }
-        :-moz-placeholder {
-            /* Firefox 4 - 18 */
-            color: #999;
-            opacity: 1;
-            transition: opacity 250ms ease-in-out;
-        }
-        :focus:-moz-placeholder {
-            opacity: 0.5;
-        }
-        .close-icon {
-            color: #999;
-            position: absolute;
-            right: 0px;
-            top: 30%;
         }
         .company-row {
             span {
@@ -74,13 +33,21 @@ page-login {
                 color: #999;
             }
         }
+        .close-icon {
+            color: #979797;
+            position: absolute;
+            right: 0px;
+            top: 0vh;
+            width: 20px;
+            height: 100%;
+            ion-icon {
+                margin: auto;
+            }
+        }
         .full-height {
             position: relative;
         }
         .error-icon {
-            color: #979797;
-            position: absolute;
-            right: 0px;
             color: red;
             margin: auto;
         }
@@ -102,7 +69,6 @@ page-login {
         }
     }
     .login-button {
-        margin-top: 20px;
         button {
             background-color: #0f9d58;
             margin: auto;
