@@ -25,57 +25,216 @@
 
 
 <ion-content padding>
-  <ion-row class="login-detail">
-    <span>
-      Login Details
-    </span>
+  <ion-row *ngIf="switchState">
+    <ion-row class="login-detail">
+      <span>
+        Login Details
+      </span>
+    </ion-row>
+
+    <ion-row class="login-input-row">
+      <ion-col col-4>
+        <ion-row class="full-height">
+          <span>Username</span>
+        </ion-row>
+      </ion-col>
+      <ion-col col-8>
+        <ion-row class="full-height">
+          <input [(ngModel)]="userData.username" placeholder="Enter username">
+          <ion-icon name="ios-close-circle" class="close-icon" *ngIf="userData.username != ''" (click)="clearUsername()"></ion-icon>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="login-input-row">
+      <ion-col col-4>
+        <ion-row class="full-height">
+          <span>Password</span>
+        </ion-row>
+      </ion-col>
+      <ion-col col-8>
+        <ion-row class="full-height">
+          <input [(ngModel)]="userData.password" placeholder="Enter password">
+          <ion-icon name="ios-close-circle" class="close-icon" *ngIf="userData.password != ''" (click)="clearPassword()"></ion-icon>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="remember-row">
+      <ion-list>
+        <ion-item>
+          <ion-checkbox [(ngModel)]="remUsername"></ion-checkbox>
+          <ion-label>Remember username</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-row>
+
+    <ion-row class="login-button">
+      <button ion-button (click)="login()">
+        <ion-row class="full-height">
+          <ion-icon name="md-person"></ion-icon>
+          <span>Login</span>
+        </ion-row>
+      </button>
+    </ion-row>
+
   </ion-row>
 
-  <ion-row class="login-input-row">
-    <ion-col col-4>
-      <ion-row class="full-height">
-        <span>Username</span>
+  <ion-row *ngIf="!switchState">
+
+    <ion-row class="login-detail">
+      <span>
+        Settings
+      </span>
+    </ion-row>
+
+    <ion-row class="login-input-row">
+      <ion-col col-4>
+        <ion-row class="full-height">
+          <span>Sever Name</span>
+        </ion-row>
+      </ion-col>
+      <ion-col col-8>
+        <ion-row class="full-height">
+          <input [(ngModel)]="userData.servername" placeholder="Enter server name" (focus)="getCompanyFocusOn()"
+            (focusout)="getCompanyFocusOut()">
+          <ion-icon name="ios-close-circle" class="close-icon" *ngIf="userData.servername != '' && userData.servername != null"
+            (click)="clearservername()"></ion-icon>
+          <ion-icon name="ios-alert" class="error-icon" *ngIf="serNameState && userData.servername == ''"></ion-icon>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="login-input-row">
+      <ion-col col-4>
+        <ion-row class="full-height">
+          <span>Company Name</span>
+        </ion-row>
+      </ion-col>
+      <ion-col col-8>
+        <ion-row class="full-height company-row">
+          <!-- <ion-select [(ngModel)]="userData.company" placeholder="Enter company name">
+            <ion-option value="{{list.key}}" *ngFor="let list of companyList; let i = index">{{list.description}}</ion-option>
+          </ion-select>-->
+          <ion-icon name="ios-arrow-forward" class="close-icon"></ion-icon>
+          <span *ngIf="userData.company != ''" (click)="showCampanyList()">
+            {{companyDes}}
+          </span>
+          <span class="placehoder-color" *ngIf="userData.company == ''" (click)="getCompanyList()">
+            Enter company name
+          </span>
+          <ion-icon name="ios-alert" class="error-icon" *ngIf="comNameState"></ion-icon>
+        </ion-row>
+      </ion-col>
+
+      <ion-row class="remember-row">
+        <ion-list>
+          <ion-item>
+            <ion-checkbox [(ngModel)]="secureCon"></ion-checkbox>
+            <ion-label>Use secure connection</ion-label>
+          </ion-item>
+        </ion-list>
       </ion-row>
-    </ion-col>
-    <ion-col col-8>
-      <ion-row class="full-height">
-        <input [(ngModel)]="userData.username" placeholder="Enter username">
-        <ion-icon name="ios-close-circle" class="close-icon" *ngIf="userData.username != ''" (click)="clearUsername()"></ion-icon>
+    </ion-row>
+
+    <ion-row class="login-button margin-top-2">
+      <ion-col col-12>
+        <ion-row class="full-height">
+          <button ion-button (click)="saveSetting()">
+            <ion-row class="full-height">
+              <ion-icon name="md-card"></ion-icon>
+              <span>Save Settings</span>
+            </ion-row>
+          </button>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="login-button">
+
+      <ion-col col-12>
+        <ion-row class="full-height">
+          <button ion-button (click)="clearOffline()">
+            <ion-row class="full-height">
+              <ion-icon name="ios-trash-outline"></ion-icon>
+              <span>Clear All Offline Data</span>
+            </ion-row>
+          </button>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="border-row"></ion-row>
+
+    <ion-row class="app-detail">
+      <ion-row>
+        <span>
+          App verion: 2018-09-29. 1
+        </span>
       </ion-row>
-    </ion-col>
+      <ion-row>
+        <span>
+          Codepush label: Not Available
+        </span>
+      </ion-row>
+    </ion-row>
   </ion-row>
 
-  <ion-row class="login-input-row">
-    <ion-col col-4>
-      <ion-row class="full-height">
-        <span>Password</span>
+  <ion-row class="company-list" *ngIf="companyListSelected">
+    <ion-row class="company-body">
+      <ion-row class="company-detail" *ngIf="!getCompanyListState()">
+        <ion-row [ngClass]="{'each-company':list.description != companyDes  , 'selected-company': list.description == companyDes}"
+          *ngFor="let list of companyList; let i = index" (click)="selectCompany(i)">
+          <span>
+            {{list.description}}
+          </span>
+        </ion-row>
       </ion-row>
-    </ion-col>
-    <ion-col col-8>
-      <ion-row class="full-height">
-        <input [(ngModel)]="userData.password" placeholder="Enter password">
-        <ion-icon name="ios-close-circle" class="close-icon" *ngIf="userData.password != ''" (click)="clearPassword()"></ion-icon>
+      <ion-row *ngIf="getCompanyListState()">
+        <ion-row class="empty-company">
+          <span>
+            No data to display
+          </span>
+        </ion-row>
       </ion-row>
-    </ion-col>
-  </ion-row>
 
-  <ion-row class="remember-row">
-    <ion-list>
-      <ion-item>
-        <ion-checkbox [(ngModel)]="remUsername"></ion-checkbox>
-        <ion-label>Remember username</ion-label>
-      </ion-item>
-    </ion-list>
-  </ion-row>
-
-  <ion-row class="login-button">
-    <button ion-button (click)="login()">
-      <ion-row class="full-height">
-        <ion-icon name="md-person"></ion-icon>
-        <span>Login</span>
+      <ion-row class="cancel-company">
+        <button ion-button outline (click)="cancelCampany()">
+          Cancel
+        </button>
       </ion-row>
-    </button>
+    </ion-row>
   </ion-row>
 
 
 </ion-content>
+
+<ion-footer>
+  <ion-row class="tab-footer">
+    <ion-col col-6 [ngClass]="{'selected':switchState, 'unselected':!switchState}" (click)="switchLogin()">
+      <ion-row class="full-height">
+        <ion-row>
+          <ion-icon name="md-person"></ion-icon>
+        </ion-row>
+        <ion-row>
+          <span>
+            Login
+          </span>
+        </ion-row>
+      </ion-row>
+    </ion-col>
+
+    <ion-col col-6 [ngClass]="{'unselected':switchState, 'selected':!switchState}" (click)="switchSetting()">
+      <ion-row class="full-height">
+        <ion-row>
+          <ion-icon name="md-settings"></ion-icon>
+        </ion-row>
+        <ion-row>
+          <span>
+            Setting
+          </span>
+        </ion-row>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+</ion-footer>

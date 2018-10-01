@@ -1,0 +1,18 @@
+<!--
+  Generated template for the CompanyPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+<ion-row class="total-row">
+  <ion-row class="main-row">
+    <ion-list>
+      <ion-item *ngFor="let list of companyList; let i = index">
+        <span>
+          {{list.description}}
+        </span>
+      </ion-item>
+    </ion-list>
+  </ion-row>
+</ion-row>

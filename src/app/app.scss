@@ -30,8 +30,7 @@
             text-align: center;
             margin: auto;
             font-size: 1.8rem;
-            color: white;
-            // font-weight: bold;
+            color: white; // font-weight: bold;
         }
         .header-icon {
             margin: auto;
@@ -45,6 +44,13 @@
     padding-top: 20px;
 }
 
+.header-padding-ios {
+    height: 76px !important;
+    padding-top: 20px;
+    background: #00BCD4;
+    color: #FFF;
+}
+
 .full-height {
     height: 100%;
 }
@@ -53,7 +59,7 @@ ion-row {
     width: 100%;
 }
 
-.margin-top-2{
+.margin-top-2 {
     margin-top: 20px;
 }
 

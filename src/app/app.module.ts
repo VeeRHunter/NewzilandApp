@@ -7,8 +7,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
-import { SettingPage } from '../pages/setting/setting';
-import { TabsPage } from '../pages/tabs/tabs';
 import { ServerinfoProvider } from '../providers/serverinfo/serverinfo';
 import { HttpModule } from '@angular/http';
 import { AboutPage } from '../pages/about/about';
@@ -17,7 +15,7 @@ import { AboutPage } from '../pages/about/about';
 @NgModule({
   declarations: [
     MyApp,
-    HomePage, LoginPage, SettingPage, TabsPage, AboutPage
+    HomePage, LoginPage, AboutPage
   ],
   imports: [
     BrowserModule,
@@ -27,7 +25,7 @@ import { AboutPage } from '../pages/about/about';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage, LoginPage, SettingPage, TabsPage, AboutPage
+    HomePage, LoginPage, AboutPage
   ],
   providers: [
     StatusBar,

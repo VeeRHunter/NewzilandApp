@@ -5,15 +5,13 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
-import { TabsPage } from '../pages/tabs/tabs';
-import { SettingPage } from '../pages/setting/setting';
 import { AboutPage } from '../pages/about/about';
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
-  rootPage: any = TabsPage;
+  rootPage: any = LoginPage;
   public pages: Array<{ title: string, component: any, image: string }>;
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
@@ -29,7 +27,7 @@ export class MyApp {
   ionicInit() {
 
     this.pages = [
-      { title: 'Login', component: TabsPage, image: "login" },
+      { title: 'Login', component: LoginPage, image: "login" },
       { title: 'About', component: AboutPage, image: "about" },
       // { title: 'my_devices', component: MyDevicesPage, image: "devices" }
     ];
