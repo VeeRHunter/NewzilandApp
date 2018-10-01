@@ -3,9 +3,11 @@
     "no-duplicate-variable": true,
     "no-unused-variable": [
       true
-    ]
+    ],
+    "linebreak-style": 0,
   },
   "rulesDirectory": [
     "node_modules/tslint-eslint-rules/dist/rules"
-  ]
+  ],
+  "extends": "tslint-ionic-rules/strict"
 }

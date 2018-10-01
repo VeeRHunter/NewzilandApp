@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
+// tslint:disable-next-line:no-import-side-effect
 import 'rxjs/add/operator/map';
 
 /*
@@ -12,6 +13,7 @@ import 'rxjs/add/operator/map';
 export class ServerinfoProvider {
 
   constructor(public http: Http) {
+    // tslint:disable-next-line:no-console
     console.log('Hello PeopleproviderProvider Provider');
   }
 
@@ -21,7 +23,7 @@ export class ServerinfoProvider {
 
       this.http.post(serverURL, (netParam)).subscribe(res => {
         resolve(res.json());
-      }, (err) => {
+      }, err => {
         reject(err);
       });
 
@@ -34,7 +36,7 @@ export class ServerinfoProvider {
 
       this.http.get(serverURL).subscribe(res => {
         resolve(res.json());
-      }, (err) => {
+      }, err => {
         reject(err);
       });
 

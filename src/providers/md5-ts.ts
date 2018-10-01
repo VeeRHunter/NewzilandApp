@@ -98,11 +98,11 @@ export let md5 = (string) => {
 
     function Utf8Encode(string) {
         string = string.replace(/\r\n/g, "\n");
-        var utftext = "";
+        let utftext = "";
 
-        for (var n = 0; n < string.length; n++) {
+        for (let n = 0; n < string.length; n++) {
 
-            var c = string.charCodeAt(n);
+            const c = string.charCodeAt(n);
 
             if (c < 128) {
                 utftext += String.fromCharCode(c);
@@ -118,23 +118,23 @@ export let md5 = (string) => {
         }
 
         return utftext;
-    };
+    }
 
-    var x = Array();
-    var k, AA, BB, CC, DD, a, b, c, d;
-    var S11 = 7,
+    let x = Array();
+    let k, AA, BB, CC, DD, a, b, c, d;
+    const S11 = 7,
         S12 = 12,
         S13 = 17,
         S14 = 22;
-    var S21 = 5,
+    const S21 = 5,
         S22 = 9,
         S23 = 14,
         S24 = 20;
-    var S31 = 4,
+    const S31 = 4,
         S32 = 11,
         S33 = 16,
         S34 = 23;
-    var S41 = 6,
+    const S41 = 6,
         S42 = 10,
         S43 = 15,
         S44 = 21;
@@ -223,7 +223,7 @@ export let md5 = (string) => {
         d = AddUnsigned(d, DD);
     }
 
-    var temp = WordToHex(a) + WordToHex(b) + WordToHex(c) + WordToHex(d);
+    const temp = WordToHex(a) + WordToHex(b) + WordToHex(c) + WordToHex(d);
 
     return temp.toLowerCase();
 };

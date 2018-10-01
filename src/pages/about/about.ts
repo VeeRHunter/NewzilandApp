@@ -19,6 +19,7 @@ export class AboutPage {
   }
 
   ionViewDidLoad() {
+    // tslint:disable-next-line:no-console
     console.log('ionViewDidLoad AboutPage');
   }
 

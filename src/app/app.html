@@ -1,3 +1,38 @@
+<!-- <ion-split-pane when="md">
+
+    <ion-menu [content]="content" side="left">
+
+        <ion-header class="header-class">
+
+            <ion-row class="header-row">
+            </ion-row>
+
+        </ion-header>
+
+        <ion-content class="menu-content">
+            <ion-row class="first-menu">
+                <ion-row *ngFor="let p of pages; let i = index;" class="top-menu-content" menuClose (click)="openPage(p)">
+                    <ion-col col-2>
+                        <ion-row class="full-height">
+                            <img src="assets/imgs/{{p.image}}.png" [ngClass]="{'menu-imageList':p.image != 'login', 'special-image':p.image == 'login'}"
+                                alt="" />
+                        </ion-row>
+                    </ion-col>
+                    <ion-col col-8>
+                        <ion-row class="full-height">
+                            <span class="menu-list">{{p.title}}</span>
+                        </ion-row>
+                    </ion-col>
+                </ion-row>
+            </ion-row>
+        </ion-content>
+
+    </ion-menu>
+
+    <ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>
+</ion-split-pane> -->
+
+
 <ion-menu [content]="content" side="left">
 
     <ion-header class="header-class">

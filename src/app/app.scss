@@ -97,3 +97,17 @@ ion-row {
     margin-top: 3%;
     margin-bottom: 3%;
 }
+
+.menu-enabled.split-pane-side {
+    width: 10% !important;
+    max-width: 10% !important;
+    min-width: 270px !important;
+}
+
+.menu-content.menu-content-overlay.split-pane-side {
+    width: 90% !important;
+    max-width: 90% !important;
+    .header-icon {
+        display: none;
+    }
+}
